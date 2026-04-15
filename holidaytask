@@ -1,0 +1,61 @@
+import java.util.ArrayList;
+import java.util.List;
+interface Rule {
+    boolean evaluate(Person person);
+    void execute(Person person);
+}
+class Person {
+    int age;
+    double salary;
+
+    Person(int age, double salary) {
+        this.age = age;
+        this.salary = salary;
+    }
+}
+class AgeRule implements Rule {
+    public boolean evaluate(Person person) {
+        return person.age > 18;
+    }
+
+    public void execute(Person person) {
+        System.out.println("Eligible to vote");
+    }
+}
+class SalaryRule implements Rule {
+    public boolean evaluate(Person person) {
+        return person.salary > 50000;
+    }
+
+    public void execute(Person person) {
+        System.out.println("High income person");
+    }
+}
+class RuleEngine {
+    private List<Rule> rules = new ArrayList<>();
+
+    public void addRule(Rule rule) {
+        rules.add(rule);
+    }
+
+    public void run(Person person) {
+        for (Rule rule : rules) {
+            if (rule.evaluate(person)) {
+                rule.execute(person);
+            }
+        }
+    }
+}
+public class Main {
+    public static void main(String[] args) {
+
+        Person person = new Person(25, 60000);
+
+        RuleEngine engine = new RuleEngine();
+
+        engine.addRule(new AgeRule());
+        engine.addRule(new SalaryRule());
+
+        engine.run(person);
+    }
+}
